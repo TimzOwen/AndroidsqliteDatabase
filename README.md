@@ -13,4 +13,17 @@ using SQLite for Database storage
     
     .quit -----> exit the sqlite application
     
+### Storage classes in Android SQL
+
+    Null---> Null vlues
+    
+    INTEGER---> Valued signed with Integer
+    
+    REAL---> Value signed with Floating Point
+    
+    TEXT ---> Singed value with String
+    
+    BLOB---> Data stored excatly as input
+   
+    
     
