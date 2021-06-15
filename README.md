@@ -1,7 +1,7 @@
 ## Android sqlite3 Database
 using SQLite for Database storage
 
-### Basic SQLite commands
+#### Basic SQLite commands
 
     sqlite3--> Opens up sqlite3 program for your computer
     
@@ -13,7 +13,7 @@ using SQLite for Database storage
     
     .quit -----> exit the sqlite application
     
-### Storage classes in Android SQL
+#### Storage classes in Android SQL
 
     Null---> Null vlues
     
