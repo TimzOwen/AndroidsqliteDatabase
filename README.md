@@ -23,7 +23,14 @@ using SQLite for Database storage
     
     TEXT ---> Singed value with String
     
-    BLOB---> Data stored excatly as input
+    BLOB---> Data stored excatly as input(Like images or binaries)
    
+   
+#### Basic sqlite commands
+
+    .open name.db---> Creates a new database file of non existed before.
     
+    .quit / .help--> gives you basic commands and descriptoin and quit the terminal
+    
+    sqlite3 name.db ---> starts the sql app by opening directly the database file
     
