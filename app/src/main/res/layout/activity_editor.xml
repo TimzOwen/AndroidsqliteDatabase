@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/name_input"
+        android:layout_marginRight="64dp"
+        android:text="Overview" />
+
+    <EditText
+        android:id="@+id/name_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/name"
+        android:layout_toRightOf="@id/name"
+        android:hint="@string/overview_hint" />
+
+    <EditText
+        android:id="@+id/breed_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/name_input"
+        android:layout_alignStart="@id/name_input"
+        android:layout_below="@id/name_input"
+        android:hint="@string/gender_hint" />
+
+    <Spinner
+        android:id="@+id/gender_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/breed_input"
+        android:layout_below="@id/breed_input"
+        />
+
+    <TextView
+        android:id="@+id/gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gender"
+        android:layout_above="@+id/measurement_input"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+
+    <EditText
+        android:gravity="end"
+        android:id="@+id/measurement_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/gender_spinner"
+        android:layout_alignStart="@id/gender_spinner"
+        android:layout_below="@id/gender_spinner"
+        android:inputType="none"
+        android:hint="@string/measurement_hint" />
+
+    <TextView
+        android:layout_alignBaseline="@id/measurement_input"
+        android:id="@+id/measurement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Measurement" />
+
+</RelativeLayout>
