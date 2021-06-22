@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">dataStorageSqlite3</string>
+    <string name="app_name">Pets</string>
     <!-- Label for overflow menu option that inserts fake pet data into the app [CHAR LIMIT=20] -->
     <string name="action_insert_dummy_data">Insert Dummy Data</string>
 
