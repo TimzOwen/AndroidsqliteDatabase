@@ -3,6 +3,8 @@ package com.codewithtimzowen.datastoragesqlite3;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -12,6 +14,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.codewithtimzowen.datastoragesqlite3.data.PetContract.PetEntry;
+import com.codewithtimzowen.datastoragesqlite3.data.PetDbHelper;
 
 
 public class EditorActivity extends AppCompatActivity {
@@ -34,10 +40,15 @@ public class EditorActivity extends AppCompatActivity {
      */
     private int mGender = 0;
 
+    PetDbHelper mDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+
+        //instance of the dpHelper class
+        mDbHelper = new PetDbHelper(this);
 
         // Find all relevant views that we will need to read user input from
         mNameEditText =  findViewById(R.id.edit_pet_name);
@@ -46,6 +57,33 @@ public class EditorActivity extends AppCompatActivity {
         mGenderSpinner =  findViewById(R.id.spinner_gender);
 
         setupSpinner();
+    }
+
+    // get values from the user.
+    private void insertPet(){
+        String nameString = mNameEditText.getText().toString().trim();
+        String breedString = mBreedEditText.getText().toString().trim();
+        String weightString = mWeightEditText.getText().toString().trim();
+        int weight = Integer.parseInt(weightString);
+
+        //get writable data
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(PetEntry.COLUMN_PET_NAME, nameString);
+        values.put(PetEntry.COLUMN_PET_BREED, breedString);
+        values.put(PetEntry.COLUMN_PET_GENDER, mGender);
+        values.put(PetEntry.COLUMN_PET_WEIGHT, weight);
+
+        long newRowId = db.insert(PetEntry.TABLE_NAME,null,values);
+
+        //check and return rowId on Failure or success
+        if (newRowId == -1){
+            Toast.makeText(this,"Error while inserting",Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(this,"inserted successfully "+newRowId,Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 
@@ -71,11 +109,11 @@ public class EditorActivity extends AppCompatActivity {
                 String selection = (String) parent.getItemAtPosition(position);
                 if (!TextUtils.isEmpty(selection)) {
                     if (selection.equals(getString(R.string.gender_male))) {
-                        mGender = 1; // Male
+                        mGender = PetEntry.GENDER_MALE; // Male
                     } else if (selection.equals(getString(R.string.gender_female))) {
-                        mGender = 2; // Female
+                        mGender = PetEntry.GENDER_FEMALE; // Female
                     } else {
-                        mGender = 0; // Unknown
+                        mGender = PetEntry.GENDER_UNKNOWN; // Unknown
                     }
                 }
             }
@@ -103,7 +141,10 @@ public class EditorActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                // Do nothing for now
+                // save the data to the database
+                insertPet();
+                //Exit the editor activity and go back to the main Catalog activity
+                finish();
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
