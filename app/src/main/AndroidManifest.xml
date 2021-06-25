@@ -18,7 +18,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CatalogActivity" />
-
         </activity>
         <activity android:name=".CatalogActivity">
             <intent-filter>
@@ -26,6 +25,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="com.codewithtimzowen.datastoragesqlite3"
+            android:name=".data.PetProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>
