@@ -54,7 +54,7 @@ public class CatalogActivity extends AppCompatActivity {
         //create and/ open a database connection from the helper class.
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        //declare the projections of intrest
+        //declare the projections of interest
         String[] projections = {
                 PetEntry._ID,
                 PetEntry.COLUMN_PET_NAME,
@@ -62,15 +62,24 @@ public class CatalogActivity extends AppCompatActivity {
                 PetEntry.COLUMN_PET_GENDER,
                 PetEntry.COLUMN_PET_WEIGHT
         };
-        Cursor cursor = db.query(
-                PetEntry.TABLE_NAME,
+        //comented . avoid direct data calls to the database.
+//        Cursor cursor = db.query(
+//                PetEntry.TABLE_NAME,
+//                projections,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null
+//        );
+
+        // instead use content providers
+        Cursor cursor = getContentResolver().query(
+                PetEntry.CONTENT_URI,
                 projections,
                 null,
                 null,
-                null,
-                null,
-                null
-        );
+                null);
 
         // Find the view related to the UI in the Catalog
         TextView displayView = findViewById(R.id.text_view_pet);
