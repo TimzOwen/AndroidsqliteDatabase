@@ -1,18 +1,29 @@
 package com.codewithtimzowen.datastoragesqlite3.data;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 public final class PetContract {
-
-    public static final String CONTENT_AUTHORITY = "com.codewithtimzowen.datastoragesqlite3.data/pets";
-    public static final String PATH_PETS = "uri_matcher_object";
 
     //private constructor
     private PetContract(){
 
     }
 
+
+
+    public static final String CONTENT_AUTHORITY = "com.codewithtimzowen.datastoragesqlite3";
+
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+
+
+    public static final String PATH_PETS = "pets";
+
+
     public static final class PetEntry implements BaseColumns{
+
+        /** The content URI to access the pet data in the provider */
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PETS);
 
         public final static String TABLE_NAME = "pets";
 
