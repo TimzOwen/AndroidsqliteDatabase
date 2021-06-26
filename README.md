@@ -34,3 +34,8 @@ using SQLite for Database storage
     
     sqlite3 name.db ---> starts the sql app by opening directly the database file
     
+    
+    
+#### content providers
+
+    content://com.android.example.contacts/contacts    (shows structure of the content URI (schema, content authority, data)
