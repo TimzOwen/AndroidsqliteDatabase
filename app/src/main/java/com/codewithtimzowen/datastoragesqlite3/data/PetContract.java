@@ -4,8 +4,8 @@ import android.provider.BaseColumns;
 
 public final class PetContract {
 
-    public static final String CONTENT_AUTHORITY = "com.codewithtimzowen.datastoragesqlite3.data/pets";
-    public static final String PATH_PETS = "uri_matcher_object";
+    public static final String CONTENT_AUTHORITY = "com.codewithtimzowen.datastoragesqlite3.";
+    public static final String PATH_PETS = "pets";
 
     //private constructor
     private PetContract(){
