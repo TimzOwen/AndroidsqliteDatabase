@@ -62,16 +62,7 @@ public class CatalogActivity extends AppCompatActivity {
                 PetEntry.COLUMN_PET_GENDER,
                 PetEntry.COLUMN_PET_WEIGHT
         };
-        //comented . avoid direct data calls to the database.
-//        Cursor cursor = db.query(
-//                PetEntry.TABLE_NAME,
-//                projections,
-//                null,
-//                null,
-//                null,
-//                null,
-//                null
-//        );
+
 
         // instead use content providers
         Cursor cursor = getContentResolver().query(
