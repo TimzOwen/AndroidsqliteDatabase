@@ -42,6 +42,12 @@
     <!-- Label for dropdown menu option if the pet is male [CHAR LIMIT=20] -->
     <string name="gender_male">Male</string>
 
+    <!-- Title text for the empty view, which describes the empty dog house image [CHAR LIMIT=50] -->
+    <string name="empty_view_title_text">It\'s a bit lonely here...</string>
+
+    <!-- Subtitle text for the empty view that prompts the user to add a pet [CHAR LIMIT=50] -->
+    <string name="empty_view_subtitle_text">Get started by adding a pet</string>
+
     <!-- Label for dropdown menu option if the pet is female [CHAR LIMIT=20] -->
     <string name="gender_female">Female</string>
 

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,6 +35,13 @@ public class CatalogActivity extends AppCompatActivity {
 
         //display text on screen to check if db create successfully
         displayDataInfo();
+
+        // Find the ListView which will be populated with the pet data
+        ListView petListView = (ListView) findViewById(R.id.list);
+
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        View emptyView = findViewById(R.id.empty_view);
+        petListView.setEmptyView(emptyView);
     }
 
     // override the onStart method to display new data each time the user exits the editor activity
