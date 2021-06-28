@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.codewithtimzowen.datastoragesqlite3.data.PetContract.PetEntry;
@@ -66,43 +67,13 @@ public class CatalogActivity extends AppCompatActivity {
                 null,
                 null,
                 null);
+        //Listview
+        ListView petListView = findViewById(R.id.list);
 
-        // Find the view related to the UI in the Catalog
-        TextView displayView = findViewById(R.id.text_view_pet);
+        //set cursor
+        PetCursorAdapter adapter = new PetCursorAdapter(this, cursor);
 
-        try {
-
-            displayView.setText("The pets table contains " + cursor.getCount() + " pets. \n\n");
-            displayView.append(PetEntry._ID + " - " +
-                    PetEntry.COLUMN_PET_NAME + " - "
-                    + PetEntry.COLUMN_PET_BREED
-                    + " - " + PetEntry.COLUMN_PET_GENDER
-                    + " - " + PetEntry.COLUMN_PET_WEIGHT + "\n");
-
-            //find respective index
-            int idColumnIndex = cursor.getColumnIndex(PetEntry._ID);
-            int nameColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_NAME);
-            int breedColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_BREED);
-            int genderColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_GENDER);
-            int weightColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_WEIGHT);
-
-            //iterate and update as long as the return type is true;
-            while (cursor.moveToNext()) {
-                int currentId = cursor.getInt(idColumnIndex);
-                String currentName = cursor.getString(nameColumnIndex);
-                String currentBreed = cursor.getString(breedColumnIndex);
-                int currentGender = cursor.getInt(genderColumnIndex);
-                int currentWeight = cursor.getInt(weightColumnIndex);
-
-                displayView.append(("\n " + currentId + " - " + currentName +
-                        " - " + currentBreed +
-                        " - " + currentGender +
-                        " - " + currentWeight));
-            }
-
-        } finally {
-            cursor.close();
-        }
+        petListView.setAdapter(adapter);
     }
 
     // method to insert the data from user to the database.
