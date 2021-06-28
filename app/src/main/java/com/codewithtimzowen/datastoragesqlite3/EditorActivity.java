@@ -5,6 +5,7 @@ import androidx.core.app.NavUtils;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -61,27 +62,30 @@ public class EditorActivity extends AppCompatActivity {
 
     // get values from the user.
     private void insertPet(){
+        //check for empty data . textutils.not empty
+        // read from all inputs
         String nameString = mNameEditText.getText().toString().trim();
         String breedString = mBreedEditText.getText().toString().trim();
         String weightString = mWeightEditText.getText().toString().trim();
         int weight = Integer.parseInt(weightString);
 
-        //get writable data
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
+        //create content values for insertion
         ContentValues values = new ContentValues();
         values.put(PetEntry.COLUMN_PET_NAME, nameString);
         values.put(PetEntry.COLUMN_PET_BREED, breedString);
         values.put(PetEntry.COLUMN_PET_GENDER, mGender);
         values.put(PetEntry.COLUMN_PET_WEIGHT, weight);
 
-        long newRowId = db.insert(PetEntry.TABLE_NAME,null,values);
+        //get new URI and inser
+        Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI,values);
 
-        //check and return rowId on Failure or success
-        if (newRowId == -1){
-            Toast.makeText(this,"Error while inserting",Toast.LENGTH_LONG).show();
+        //check is the insertion was successful
+        if (newUri == null){
+            Toast.makeText(this, getString(R.string.editor_insert_pet_failed),
+                    Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(this,"inserted successfully "+newRowId,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.editor_insert_pet_successful),
+                    Toast.LENGTH_SHORT).show();
         }
 
     }

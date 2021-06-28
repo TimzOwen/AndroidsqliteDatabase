@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,16 +19,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class CatalogActivity extends AppCompatActivity {
 
-    //declare
-    private PetDbHelper mDbhelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
-
-        //instantiate the class
-        mDbhelper = new PetDbHelper(this);
 
         // Setup FAB to open EditorActivity
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -36,7 +31,7 @@ public class CatalogActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        //display text on screen to cehck if db create successfully
+        //display text on screen to check if db create successfully
         displayDataInfo();
     }
 
@@ -112,8 +107,6 @@ public class CatalogActivity extends AppCompatActivity {
 
     // method to insert the data from user to the database.
     private void insertPet() {
-        //get a writable mode of the sqlite
-        SQLiteDatabase db = mDbhelper.getWritableDatabase();
 
         //use content calues to store data
         ContentValues values = new ContentValues();
@@ -122,11 +115,8 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
         values.put(PetEntry.COLUMN_PET_WEIGHT, 7);
 
-        // insert values
-        long newRowId = db.insert(PetEntry.TABLE_NAME, null, values);
-
-        // log to check flow of execution
-        Log.v("CatalogActivity", "new row Id inserted" + newRowId);
+       // use content Uri to get access and add data to the database
+        Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
 
     }
 
