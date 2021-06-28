@@ -121,7 +121,7 @@ public class PetProvider extends ContentProvider {
         //insert new pet with given values
         long id = database.insert(PetEntry.TABLE_NAME, null,values);
 
-        //check if insertion was succesful -1 = error . log it out for ease of debugging.
+        //check if insertion was successful -1 = error . log it out for ease of debugging.
         if(id==-1){
             Log.e(LOG_TAG,"Error during insertion" + uri);
             return null;
@@ -135,7 +135,34 @@ public class PetProvider extends ContentProvider {
     }
 
     @Override
-    public int update( Uri uri,  ContentValues contentValues,  String s,  String[] strings) {
+    public int update(Uri uri, ContentValues contentValues, String selection,
+                      String[] selectionArgs) {
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PETS:
+                return updatePet(uri, contentValues, selection, selectionArgs);
+            case PETS_ID:
+                // For the PET_ID code, extract out the ID from the URI,
+                // so we know which row to update. Selection will be "_id=?" and selection
+                // arguments will be a String array containing the actual ID.
+                selection = PetEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                return updatePet(uri, contentValues, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
+    }
+    /**
+     * Update pets in the database with the given content values. Apply the changes to the rows
+     * specified in the selection and selection arguments (which could be 0 or 1 or more pets).
+     * Return the number of rows that were successfully updated.
+     */
+    private int updatePet(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+
+        // TODO: Update the selected pets in the pets database table with the given ContentValues
+
+        // TODO: Return the number of rows that were affected
         return 0;
     }
+
 }
