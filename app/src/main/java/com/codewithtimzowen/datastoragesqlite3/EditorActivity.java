@@ -41,15 +41,11 @@ public class EditorActivity extends AppCompatActivity {
      */
     private int mGender = 0;
 
-    PetDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-
-        //instance of the dpHelper class
-        mDbHelper = new PetDbHelper(this);
 
         // Find all relevant views that we will need to read user input from
         mNameEditText =  findViewById(R.id.edit_pet_name);

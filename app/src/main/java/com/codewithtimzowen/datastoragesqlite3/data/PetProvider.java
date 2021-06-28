@@ -96,6 +96,19 @@ public class PetProvider extends ContentProvider {
 
     //insert and return new content uris
     private Uri insertPet(Uri uri, ContentValues values){
+
+        //check that the name is not null
+        String name = values.getAsString(PetEntry.COLUMN_PET_NAME);
+        //if name is null throw an exception
+        if (name==null){
+            throw new IllegalArgumentException("Requires pet name");
+        }
+        //check for gender
+        Integer gender = values.getAsInteger(PetEntry.COLUMN_PET_GENDER);
+        if (gender==null || !PetEntry.isValidGender(gender)){
+            throw new IllegalArgumentException("Pet requires valid Gender");
+        }
+
         //get writable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
