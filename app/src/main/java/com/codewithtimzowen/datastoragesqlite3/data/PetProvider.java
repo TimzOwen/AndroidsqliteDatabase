@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 import com.codewithtimzowen.datastoragesqlite3.data.PetContract.PetEntry;
 
@@ -20,6 +21,9 @@ public class PetProvider extends ContentProvider {
 
     //content uri for corresponding code
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+    /*Log for error messages for ease of debugging*/
+    private static final String LOG_TAG = PetProvider.class.getSimpleName();
 
     // static initializer
     static {
@@ -79,8 +83,50 @@ public class PetProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert( Uri uri,  ContentValues values) {
-        return null;
+    public Uri insert( Uri uri,  ContentValues contentValues) {
+
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PETS:
+                return insertPet(uri, contentValues);
+            default:
+                throw new IllegalArgumentException("insertion is not supported for " + uri);
+        }
+    }
+
+    //insert and return new content uris
+    private Uri insertPet(Uri uri, ContentValues values){
+
+        //check that the name is not null
+        String name = values.getAsString(PetEntry.COLUMN_PET_NAME);
+        //if name is null throw an exception
+        if (name==null){
+            throw new IllegalArgumentException("Requires pet name");
+        }
+        //check for gender
+        Integer gender = values.getAsInteger(PetEntry.COLUMN_PET_GENDER);
+        if (gender==null || !PetEntry.isValidGender(gender)){
+            throw new IllegalArgumentException("Pet requires valid Gender");
+        }
+        //check for weight
+        Integer weight = values.getAsInteger(PetEntry.COLUMN_PET_WEIGHT);
+        //check if not null and is negative throw an exception
+        if (weight != null && weight < 0) {
+            throw new IllegalArgumentException("Pet requires valid weight");
+        }
+
+        //get writable database
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        //insert new pet with given values
+        long id = database.insert(PetEntry.TABLE_NAME, null,values);
+
+        //check if insertion was succesful -1 = error . log it out for ease of debugging.
+        if(id==-1){
+            Log.e(LOG_TAG,"Error during insertion" + uri);
+            return null;
+        }
+        return ContentUris.withAppendedId(uri, id);
     }
 
     @Override
