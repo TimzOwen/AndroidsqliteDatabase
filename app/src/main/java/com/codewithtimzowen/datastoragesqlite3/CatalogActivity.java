@@ -23,6 +23,7 @@ import com.codewithtimzowen.datastoragesqlite3.data.PetContract.PetEntry;
 import com.codewithtimzowen.datastoragesqlite3.data.PetDbHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+// implement loader callbacks
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @Override
@@ -113,6 +114,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         return true;
     }
 
+    //once menu inflate use switch case to update
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // User clicked on a menu option in the app bar overflow menu
