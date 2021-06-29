@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import android.content.ContentValues;
@@ -26,6 +27,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 // implement loader callbacks
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static int PET_LOADER = 0;
+    PetCursorAdapter mCursorAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,56 +42,23 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             startActivity(intent);
         });
 
-        //display text on screen to check if db create successfully
-        displayDataInfo();
-
         // Find the ListView which will be populated with the pet data
         ListView petListView = (ListView) findViewById(R.id.list);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
         petListView.setEmptyView(emptyView);
+
+        //set up adapter to create a loader in the list
+        mCursorAdapter = new PetCursorAdapter(this,null);
+        petListView.setAdapter(mCursorAdapter);
+
+        //start the loader
+        getLoaderManager().initLoader(PET_LOADER,null,this);
     }
 
-    // override the onStart method to display new data each time the user exits the editor activity
-    @Override
-    protected void onStart() {
-        super.onStart();
-        displayDataInfo();
-    }
-
-    //Method to check sql creation entry
-    private void displayDataInfo() {
-        //create an instance of the database class
-        PetDbHelper mDbHelper = new PetDbHelper(this);
-        //create and/ open a database connection from the helper class.
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        //declare the projections of interest
-        String[] projections = {
-                PetEntry._ID,
-                PetEntry.COLUMN_PET_NAME,
-                PetEntry.COLUMN_PET_BREED,
-                PetEntry.COLUMN_PET_GENDER,
-                PetEntry.COLUMN_PET_WEIGHT
-        };
 
 
-        // instead use content providers
-        Cursor cursor = getContentResolver().query(
-                PetEntry.CONTENT_URI,
-                projections,
-                null,
-                null,
-                null);
-        //Listview
-        ListView petListView = findViewById(R.id.list);
-
-        //set cursor
-        PetCursorAdapter adapter = new PetCursorAdapter(this, cursor);
-
-        petListView.setAdapter(adapter);
-    }
 
     // method to insert the data from user to the database.
     private void insertPet() {
@@ -123,7 +94,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             case R.id.action_insert_dummy_data:
                 // call the insert method to post to the database
                 insertPet();
-                displayDataInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
@@ -135,19 +105,34 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     //loader methods for loading data
 
-    @NonNull
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        return null;
+        //define projections that specifys columns
+        String[] projections = {
+                PetEntry._ID,
+                PetEntry.COLUMN_PET_NAME,
+                PetEntry.COLUMN_PET_BREED
+        };
+        //perform execution on a cursor loader in background
+        return new CursorLoader(this,
+                PetEntry.CONTENT_URI,
+                projections,
+                null,
+                null,
+                null);
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-
+    public void onLoadFinished( Loader<Cursor> loader, Cursor data) {
+        //updated UI with bnew cursor laoder
+        mCursorAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+    public void onLoaderReset( Loader<Cursor> loader) {
+        //called when data needs to be collected
+        mCursorAdapter.swapCursor(null);
 
     }
 }
