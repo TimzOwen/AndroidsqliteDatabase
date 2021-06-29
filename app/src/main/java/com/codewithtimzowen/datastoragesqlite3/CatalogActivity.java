@@ -21,13 +21,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.codewithtimzowen.datastoragesqlite3.data.PetContract.PetEntry;
-import com.codewithtimzowen.datastoragesqlite3.data.PetDbHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 // implement loader callbacks
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static int PET_LOADER = 0;
+    private static final int PET_LOADER = 0;
     PetCursorAdapter mCursorAdapter;
 
     @Override
@@ -53,17 +52,13 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         mCursorAdapter = new PetCursorAdapter(this,null);
         petListView.setAdapter(mCursorAdapter);
 
-        //start the loader
-        getLoaderManager().initLoader(PET_LOADER,null,this);
     }
-
-
 
 
     // method to insert the data from user to the database.
     private void insertPet() {
 
-        //use content calues to store data
+        //use content values to store data
         ContentValues values = new ContentValues();
         values.put(PetEntry.COLUMN_PET_NAME, "Toto");
         values.put(PetEntry.COLUMN_PET_BREED, "Terrie");
@@ -74,7 +69,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
 
     }
-
 
     //create menus inflation
     @Override
@@ -105,10 +99,10 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     //loader methods for loading data
 
-
+    @NonNull
     @Override
-    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        //define projections that specifys columns
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        //define projections that specify columns
         String[] projections = {
                 PetEntry._ID,
                 PetEntry.COLUMN_PET_NAME,
@@ -122,15 +116,14 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 null,
                 null);
     }
-
     @Override
-    public void onLoadFinished( Loader<Cursor> loader, Cursor data) {
-        //updated UI with bnew cursor laoder
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        //updated UI with new cursor loader
         mCursorAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset( Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         //called when data needs to be collected
         mCursorAdapter.swapCursor(null);
 

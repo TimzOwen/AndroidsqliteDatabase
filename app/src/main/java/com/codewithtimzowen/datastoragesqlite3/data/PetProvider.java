@@ -73,6 +73,9 @@ public class PetProvider extends ContentProvider {
                 throw new IllegalArgumentException("cannot query unknown URI" + uri);
         }
 
+        //set Notification URI on the cursor to updated the changes to UI from database
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
         //return cursor object;
         return cursor;
     }
@@ -135,6 +138,10 @@ public class PetProvider extends ContentProvider {
             Log.e(LOG_TAG,"Error during insertion" + uri);
             return null;
         }
+
+        //notify all listeners that data has changed
+        getContext().getContentResolver().notifyChange(uri, null);
+
         return ContentUris.withAppendedId(uri, id);
     }
 
