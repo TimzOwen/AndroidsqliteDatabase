@@ -1,6 +1,10 @@
 package com.codewithtimzowen.datastoragesqlite3;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -11,13 +15,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.codewithtimzowen.datastoragesqlite3.data.PetContract.PetEntry;
 import com.codewithtimzowen.datastoragesqlite3.data.PetDbHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class CatalogActivity extends AppCompatActivity {
+// implement loader callbacks
+public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,13 @@ public class CatalogActivity extends AppCompatActivity {
 
         //display text on screen to check if db create successfully
         displayDataInfo();
+
+        // Find the ListView which will be populated with the pet data
+        ListView petListView = (ListView) findViewById(R.id.list);
+
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        View emptyView = findViewById(R.id.empty_view);
+        petListView.setEmptyView(emptyView);
     }
 
     // override the onStart method to display new data each time the user exits the editor activity
@@ -66,43 +80,13 @@ public class CatalogActivity extends AppCompatActivity {
                 null,
                 null,
                 null);
+        //Listview
+        ListView petListView = findViewById(R.id.list);
 
-        // Find the view related to the UI in the Catalog
-        TextView displayView = findViewById(R.id.text_view_pet);
+        //set cursor
+        PetCursorAdapter adapter = new PetCursorAdapter(this, cursor);
 
-        try {
-
-            displayView.setText("The pets table contains " + cursor.getCount() + " pets. \n\n");
-            displayView.append(PetEntry._ID + " - " +
-                    PetEntry.COLUMN_PET_NAME + " - "
-                    + PetEntry.COLUMN_PET_BREED
-                    + " - " + PetEntry.COLUMN_PET_GENDER
-                    + " - " + PetEntry.COLUMN_PET_WEIGHT + "\n");
-
-            //find respective index
-            int idColumnIndex = cursor.getColumnIndex(PetEntry._ID);
-            int nameColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_NAME);
-            int breedColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_BREED);
-            int genderColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_GENDER);
-            int weightColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_WEIGHT);
-
-            //iterate and update as long as the return type is true;
-            while (cursor.moveToNext()) {
-                int currentId = cursor.getInt(idColumnIndex);
-                String currentName = cursor.getString(nameColumnIndex);
-                String currentBreed = cursor.getString(breedColumnIndex);
-                int currentGender = cursor.getInt(genderColumnIndex);
-                int currentWeight = cursor.getInt(weightColumnIndex);
-
-                displayView.append(("\n " + currentId + " - " + currentName +
-                        " - " + currentBreed +
-                        " - " + currentGender +
-                        " - " + currentWeight));
-            }
-
-        } finally {
-            cursor.close();
-        }
+        petListView.setAdapter(adapter);
     }
 
     // method to insert the data from user to the database.
@@ -130,6 +114,7 @@ public class CatalogActivity extends AppCompatActivity {
         return true;
     }
 
+    //once menu inflate use switch case to update
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // User clicked on a menu option in the app bar overflow menu
@@ -146,5 +131,23 @@ public class CatalogActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //loader methods for loading data
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
     }
 }
