@@ -52,6 +52,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         mCursorAdapter = new PetCursorAdapter(this,null);
         petListView.setAdapter(mCursorAdapter);
 
+        //TODO set up the UI invoker
+
     }
 
 
