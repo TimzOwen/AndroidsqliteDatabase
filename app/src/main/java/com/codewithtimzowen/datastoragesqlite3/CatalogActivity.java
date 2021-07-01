@@ -52,9 +52,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         //set up adapter to create a loader in the list
         mCursorAdapter = new PetCursorAdapter(this,null);
         petListView.setAdapter(mCursorAdapter);
-<<<<<<< HEAD
-    }
-=======
+
 
        //set onClick item listener
         petListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -150,4 +148,4 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     }
 }
->>>>>>> lesson4
+
