@@ -1,5 +1,6 @@
 package com.codewithtimzowen.datastoragesqlite3;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -49,6 +52,20 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         //set up adapter to create a loader in the list
         mCursorAdapter = new PetCursorAdapter(this,null);
         petListView.setAdapter(mCursorAdapter);
+
+       //set onClick item listener
+        petListView.setOnItemClickListener((parent, view, position, id) -> {
+            // open the new Editor activity from the item clicked
+            Intent editorIntent = new Intent(CatalogActivity.this, EditorActivity.class);
+            //pass the data from CONTENT_URI into Editor activity from the id
+            Uri currentPetUri = ContentUris.withAppendedId(PetEntry.CONTENT_URI,id);
+            //set uri on the data
+            editorIntent.setData(currentPetUri);
+            //startActivity
+            startActivity(editorIntent);
+
+        });
+
 
         //kick off the loader
         getSupportLoaderManager().initLoader(PET_LOADER,null, this);
