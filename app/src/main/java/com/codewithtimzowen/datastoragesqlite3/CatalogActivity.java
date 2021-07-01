@@ -66,8 +66,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
         });
 
-
         //kick off the loader
+        //TODO update the loader from depreciation
         getSupportLoaderManager().initLoader(PET_LOADER,null, this);
 
     }
