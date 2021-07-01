@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DataStorageSqlite3">
         <activity android:name=".EditorActivity"
-            android:label="@string/editor_activity_title_new_pet"
             android:theme="@style/EditorTheme"
             android:parentActivityName=".CatalogActivity">
             <meta-data

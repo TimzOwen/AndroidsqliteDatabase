@@ -51,6 +51,9 @@
     <!-- Label for dropdown menu option if the pet is female [CHAR LIMIT=20] -->
     <string name="gender_female">Female</string>
 
+    <!--Label for editing pet -->
+    <string name="editor_activity_title_edit_pet">Edit Pet</string>
+
     <!-- Toast message in editor when new pet has been successfully inserted [CHAR LIMIT=NONE] -->
     <string name="editor_insert_pet_successful">Pet saved</string>
 
