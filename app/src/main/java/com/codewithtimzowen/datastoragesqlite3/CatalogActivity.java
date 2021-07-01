@@ -1,24 +1,25 @@
 package com.codewithtimzowen.datastoragesqlite3;
 
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
-import android.content.ContentValues;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.CursorAdapter;
 
 import com.codewithtimzowen.datastoragesqlite3.data.PetContract.PetEntry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -51,6 +52,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         //set up adapter to create a loader in the list
         mCursorAdapter = new PetCursorAdapter(this,null);
         petListView.setAdapter(mCursorAdapter);
+
+        //kick off the loader
+        getLoaderManager().initLoader(PET_LOADER,null,(android.app.LoaderManager.LoaderCallbacks<Cursor>) this);
 
     }
 
@@ -116,6 +120,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 null,
                 null);
     }
+
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         //updated UI with new cursor loader
