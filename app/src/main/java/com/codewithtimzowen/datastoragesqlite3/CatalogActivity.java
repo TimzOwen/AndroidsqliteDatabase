@@ -17,6 +17,7 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 
+
 import com.codewithtimzowen.datastoragesqlite3.data.PetContract.PetEntry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -53,7 +54,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         getSupportLoaderManager().initLoader(PET_LOADER,null, this);
 
     }
-
 
     // method to insert the data from user to the database.
     private void insertPet() {

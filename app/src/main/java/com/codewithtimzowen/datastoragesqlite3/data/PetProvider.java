@@ -140,6 +140,7 @@ public class PetProvider extends ContentProvider {
         }
 
         //notify all listeners that data has changed
+        //uri:-->com.package.pets
         getContext().getContentResolver().notifyChange(uri, null);
 
         return ContentUris.withAppendedId(uri, id);
@@ -151,7 +152,9 @@ public class PetProvider extends ContentProvider {
         // Get writeable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
+
         final int match = sUriMatcher.match(uri);
+
         switch (match) {
             case PETS:
                 // Delete all rows that match the selection and selection args
@@ -223,11 +226,24 @@ public class PetProvider extends ContentProvider {
         if (values.size() == 0) {
             return 0;
         }
+
         // Otherwise, get writeable database to update the data
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
-        // Returns the number of database rows affected by the update statement
-        return database.update(PetEntry.TABLE_NAME, values, selection, selectionArgs);
+//        // Returns the number of database rows affected by the update statement
+//        return database.update(PetEntry.TABLE_NAME, values, selection, selectionArgs);
+
+        // Perform the update on the database and get the number of rows affected
+        int rowsUpdated = database.update(PetEntry.TABLE_NAME, values, selection, selectionArgs);
+
+        // If 1 or more rows were updated, then notify all listeners that the data at the
+        // given URI has changed
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsUpdated;
+
     }
 
 }
