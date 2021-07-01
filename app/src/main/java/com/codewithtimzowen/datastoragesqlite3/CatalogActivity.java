@@ -16,10 +16,6 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
 
 import com.codewithtimzowen.datastoragesqlite3.data.PetContract.PetEntry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -54,7 +50,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         petListView.setAdapter(mCursorAdapter);
 
         //kick off the loader
-        getLoaderManager().initLoader(PET_LOADER,null,(android.app.LoaderManager.LoaderCallbacks<Cursor>) this);
+        getSupportLoaderManager().initLoader(PET_LOADER,null, this);
 
     }
 
